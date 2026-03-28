@@ -1,0 +1,1 @@
+from core.services.rating.get_rates import GetRates
