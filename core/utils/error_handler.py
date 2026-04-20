@@ -2,9 +2,11 @@ from functools import wraps
 import xmltodict
 
 from ..exceptions.exception_map import ERROR_MAP
+from ..exceptions.exceptions import ServerError
 
 CODE = "code"
 MESSAGE = "message"
+DESCRIPTION = "description"
 MESSAGES = "messages"
 
 def error_handler(func):
@@ -13,6 +15,7 @@ def error_handler(func):
         response = func(*args, **kwargs)
         parsed_response = xmltodict.parse(response.text)
         code = parsed_response.get(MESSAGES, {}).get(MESSAGE, {}).get(CODE)
+        code_description = parsed_response.get(MESSAGES, {}).get(MESSAGE, {}).get(DESCRIPTION)
 
         error_map = ERROR_MAP.get(code, None)
 
@@ -21,8 +24,12 @@ def error_handler(func):
 
         error_exception = error_map.exception
         error_description = error_map.description
-        error_mitigation = error_map.mitigation
 
-        raise error_exception(error_description, error_mitigation)
+        if code_description and error_exception == ServerError:
+            error_mitigation = code_description
+        else:
+            error_mitigation = error_map.mitigation
+
+        raise error_exception(error_description, error_mitigation, response.status_code)
 
     return wrapper
