@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Literal, Optional
 
 
-@dataclass(kw_only=True)
+@dataclass
 class Option:
     option_code: Literal[
         "SO",
@@ -17,20 +17,20 @@ class Option:
     ]
     option_amount: float
 
-@dataclass(kw_only=True)
+@dataclass
 class DomesticDestination:
     postal_code: str
 
-@dataclass(kw_only=True)
+@dataclass
 class UnitedStatesDestination:
     zip_code: str
 
-@dataclass(kw_only=True)
+@dataclass
 class InternationalDestination:
     country_code: str
     postal_code: str
 
-@dataclass(kw_only=True)
+@dataclass
 class Destination:
     domestic: Optional[DomesticDestination] = None
     united_states: Optional[UnitedStatesDestination] = None
@@ -39,13 +39,13 @@ class Destination:
 # ===================
 # PARCEL CHARACTERISTICS
 # ===================
-@dataclass(kw_only=True)
+@dataclass
 class Dimensions:
     length: float
     width: float
     height: float
 
-@dataclass(kw_only=True)
+@dataclass
 class ParcelCharacteristics:
     weight: float
     dimensions: Optional[Dimensions] = None
@@ -53,7 +53,7 @@ class ParcelCharacteristics:
 # ===================
 # RATES OBJECT
 # ===================
-@dataclass(kw_only=True)
+@dataclass
 class RateAdjustment:
     """
     Adjustment code
@@ -77,25 +77,25 @@ class RateAdjustment:
     name: str
     percentage_rate: float
 
-@dataclass(kw_only=True)
+@dataclass
 class RateOption:
     code: str
     name: str
     price: float
     included: bool
 
-@dataclass(kw_only=True)
+@dataclass
 class RateTaxDetails:
     price: float
     percentage_rate: float
 
-@dataclass(kw_only=True)
+@dataclass
 class RateTax:
-    gst: RateTaxDetails
-    hst: RateTaxDetails
-    pst: RateTaxDetails
+    gst: Optional[RateTaxDetails] = None
+    hst: Optional[RateTaxDetails] = None
+    pst: Optional[RateTaxDetails] = None
 
-@dataclass(kw_only=True)
+@dataclass
 class RateService:
     code: Literal[
         "DOM.RP",
@@ -122,15 +122,20 @@ class RateService:
     expected_transit_time: int
     guaranteed_delivery: bool
 
-@dataclass(kw_only=True)
+@dataclass
 class Rate:
-    adjustments: Optional[list[RateAdjustment]] = None
     base: float
     due: float
+    adjustments: Optional[list[RateAdjustment]] = None
     options: Optional[list[RateOption]] = None
     taxes: Optional[RateTax] = None
-    service: RateService = None
+    service: Optional[RateService] = None
 
-@dataclass(kw_only=True)
-class Rates:
-    rates: list[Rate]
+# ==========================
+# SERVICES
+# ==========================
+@dataclass
+class Service:
+    code: str
+    name: str
+    link: str
