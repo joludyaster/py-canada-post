@@ -2,11 +2,12 @@ from typing import Optional
 
 from .exceptions import ServerError, UserIdDeactivated, EndpointMissmatch, APIMissmatch, InvalidCustomer, \
     UnspecifiedPlatform, PlatformNotAuthorized, InactivePlatform, UnauthorizedPlatform, InvalidPlatformKeyType, \
-    IncorrectPlatformRequest, PostOfficesNotFound
+    IncorrectPlatformRequest, PostOfficesNotFound, InvalidContractNumber, InvalidPostalCode, InvalidDestinationCountry, \
+    MissingOriginPostalCode
 
 
 class ExceptionDefinition:
-    def __init__(self, exception: type[BaseException], description: str, mitigation: Optional[str] = None):
+    def __init__(self, exception: type[Exception], description: str, mitigation: Optional[str] = None):
         self.exception = exception
         self.description = description
         self.mitigation = mitigation
@@ -79,5 +80,22 @@ In rare cases, Canada Post may have deactivated the entire platform status due t
     "E00010": ExceptionDefinition(
         PostOfficesNotFound,
         "No Post Offices found"
+    ),
+    "2550": ExceptionDefinition(
+        InvalidContractNumber,
+        "The contract number is not valid.",
+        "Please enter the correct contract number"
+    ),
+    "7266": ExceptionDefinition(
+        InvalidPostalCode,
+        "Postal Code must be in format A9A or A9A9A9."
+    ),
+    "8534": ExceptionDefinition(
+        InvalidDestinationCountry,
+        "A valid destination country must be supplied."
+    ),
+    "9194": ExceptionDefinition(
+        MissingOriginPostalCode,
+        "origin-postal-code must also be provided when destination-postal-code is provided."
     )
 }
