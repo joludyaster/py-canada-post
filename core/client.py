@@ -1,6 +1,6 @@
 from base64 import b64encode
 from typing import Literal, Optional
-from .services import GetRates
+from core.services.rating import Rating
 from requests.auth import to_native_string
 
 
@@ -22,7 +22,7 @@ class PyCanadaPost:
         self.endpoint = self._get_endpoint()
         self.headers = self._get_headers()
 
-        self.rates = GetRates(
+        self.rating = Rating(
             headers=self.headers,
             endpoint=self.endpoint,
             customer_number=self.customer_number,
