@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
 
-class CanadaPostError(BaseException):
+class CanadaPostError(Exception):
     def __init__(self, description: str, mitigation: Optional[str] = None, status_code: Optional[Union[int, str]] = None):
         self.description = description
         self.mitigation = mitigation
@@ -58,7 +58,6 @@ class PlatformNotAuthorized(CanadaPostError):
     pass
 
 
-
 class InactivePlatform(CanadaPostError):
     """
     Error code: AA007
@@ -66,12 +65,12 @@ class InactivePlatform(CanadaPostError):
     pass
 
 
-
 class UnauthorizedPlatform(CanadaPostError):
     """
     Error code: AA008
     """
     pass
+
 
 class InvalidPlatformKeyType(CanadaPostError):
     """
@@ -86,8 +85,41 @@ class IncorrectPlatformRequest(CanadaPostError):
     """
     pass
 
+
 class PostOfficesNotFound(CanadaPostError):
     """
     Error code: E00010
+    """
+    pass
+
+
+# ========================
+# EXCEPTIONS FOR "DISCOVER
+# SERVICES" SECTION
+# ========================
+class InvalidContractNumber(CanadaPostError):
+    """
+    Error code: 2550
+    """
+    pass
+
+
+class InvalidPostalCode(CanadaPostError):
+    """
+    Error code: 7266
+    """
+    pass
+
+
+class InvalidDestinationCountry(CanadaPostError):
+    """
+    Error code: 8534
+    """
+    pass
+
+
+class MissingOriginPostalCode(CanadaPostError):
+    """
+    Error code: 9194
     """
     pass
