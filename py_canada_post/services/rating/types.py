@@ -1,6 +1,6 @@
 from datetime import datetime
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import Literal
 
 
 @dataclass
@@ -32,9 +32,9 @@ class InternationalDestination:
 
 @dataclass
 class Destination:
-    domestic: Optional[DomesticDestination] = None
-    united_states: Optional[UnitedStatesDestination] = None
-    international: Optional[InternationalDestination] = None
+    domestic: DomesticDestination | None = None
+    united_states: UnitedStatesDestination | None = None
+    international: InternationalDestination | None = None
 
 # ===================
 # PARCEL CHARACTERISTICS
@@ -48,7 +48,7 @@ class Dimensions:
 @dataclass
 class ParcelCharacteristics:
     weight: float
-    dimensions: Optional[Dimensions] = None
+    dimensions: Dimensions | None = None
 
 # ===================
 # RATES OBJECT
@@ -91,9 +91,9 @@ class RateTaxDetails:
 
 @dataclass
 class RateTax:
-    gst: Optional[RateTaxDetails] = None
-    hst: Optional[RateTaxDetails] = None
-    pst: Optional[RateTaxDetails] = None
+    gst: RateTaxDetails | None = None
+    hst: RateTaxDetails | None = None
+    pst: RateTaxDetails | None = None
 
 @dataclass
 class RateService:
@@ -126,10 +126,10 @@ class RateService:
 class Rate:
     base: float
     due: float
-    adjustments: Optional[list[RateAdjustment]] = None
-    options: Optional[list[RateOption]] = None
-    taxes: Optional[RateTax] = None
-    service: Optional[RateService] = None
+    adjustments: list[RateAdjustment] | None = None
+    options: list[RateOption] | None = None
+    taxes: RateTax | None = None
+    service: RateService | None = None
 
 # ==========================
 # SERVICES
