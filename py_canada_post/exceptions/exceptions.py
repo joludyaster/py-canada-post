@@ -1,8 +1,5 @@
-from typing import Optional, Union
-
-
 class CanadaPostError(Exception):
-    def __init__(self, description: str, mitigation: Optional[str] = None, status_code: Optional[Union[int, str]] = None):
+    def __init__(self, description: str, mitigation: str = None, status_code: int | str = None):
         self.description = description
         self.mitigation = mitigation
         self.status_code = status_code
