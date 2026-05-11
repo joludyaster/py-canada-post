@@ -1,31 +1,28 @@
 from dataclasses import is_dataclass
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 from xml.etree.ElementTree import Element
 
 
 class ConstructXMLElement:
 
-    def construct_xml_element(self, parent_tag: str, data: Any, child_tag: Optional[str] = None) -> Optional[Element]:
+    def construct_xml_element(self, parent_tag: str, data: Any, child_tag: str = None) -> Element | None:
         if not data:
             return None
 
+        element = None
+
         if not is_dataclass(data):
             if isinstance(data, list):
-                element = self._construct_from_list(parent_tag=parent_tag, child_tag=child_tag, data=data)
+                if child_tag:
+                    element = self._construct_from_list(parent_tag, child_tag, data)
             else:
-                transformed_data = self._to_string(data=data)
-                element = self._construct_from_string(
-                    parent_tag=parent_tag,
-                    data=transformed_data
-                )
+                transformed_data = self._to_string(data)
+                element = self._construct_from_string(parent_tag, transformed_data)
         else:
-            element = self._construct_from_dataclass(parent_tag=parent_tag, obj=data)
+            element = self._construct_from_dataclass(parent_tag, data)
 
-        if element is not None:
-            return element
-
-        return None
+        return element
 
     @staticmethod
     def _construct_from_string(parent_tag: str, data: str) -> Element:
@@ -33,7 +30,7 @@ class ConstructXMLElement:
         element.text = data
         return element
 
-    def _construct_from_dataclass(self, parent_tag: str, obj: Any) -> Optional[Element]:
+    def _construct_from_dataclass(self, parent_tag: str, obj: Any) -> Element | None:
         element = Element(parent_tag)
 
         filtered = {key: value for key, value in obj.__dict__.items() if value is not None}
@@ -42,26 +39,27 @@ class ConstructXMLElement:
 
         for key, value in filtered.items():
             if is_dataclass(value):
-                child_element = self._construct_from_dataclass(parent_tag=key, obj=value)
+                child_element = self._construct_from_dataclass(key, value)
             else:
                 child_element = Element(key.replace("_", "-"))
                 child_element.text = str(value)
 
-            element.append(child_element)
+            if child_element is not None:
+                element.append(child_element)
 
         return element
 
-    def _construct_from_list(self, parent_tag: str, child_tag: str, data: list[Any]) -> Optional[Element]:
+    def _construct_from_list(self, parent_tag: str, child_tag: str, data: list[Any]) -> Element | None:
         element = Element(parent_tag)
 
         if all(isinstance(item, str) for item in data):
             for item in data:
-                child_element = self._construct_from_string(parent_tag=child_tag, data=item)
+                child_element = self._construct_from_string(child_tag, item)
                 element.append(child_element)
 
-        elif all(is_dataclass(obj=item) for item in data):
+        elif all(is_dataclass(item) for item in data):
             for item in data:
-                child_element = self._construct_from_dataclass(parent_tag=child_tag, obj=item)
+                child_element = self._construct_from_dataclass(child_tag, item)
                 if child_element is not None:
                     element.append(child_element)
 
