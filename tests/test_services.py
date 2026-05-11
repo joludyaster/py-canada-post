@@ -1,16 +1,13 @@
 import pytest
 
-from core.exceptions.exceptions import InvalidDestinationCountry, MissingOriginPostalCode
-from . import client
+from py_canada_post.exceptions.exceptions import InvalidDestinationCountry, MissingOriginPostalCode
 
 class TestServices:
 
-    def test_services(self):
-        response = client.rating.services.discover_services(
-            country_code="JP"
-        )
+    def test_services(self, client):
+        response = client.rating.services.discover_services("JP")
 
-        services = client.rating.services.service_to_object(response=response)
+        services = client.rating.services.service_to_object(response)
 
         assert services is not None
         assert len(services) > 0
@@ -22,19 +19,14 @@ class TestServices:
 
         assert response.status_code == 200
 
-    def test_invalid_country_code(self):
+    def test_invalid_country_code(self, client):
         with pytest.raises(InvalidDestinationCountry) as exc_info:
-            client.rating.services.discover_services(
-                country_code="X"
-            )
+            client.rating.services.discover_services("X")
 
         assert exc_info.value.status_code == 400
 
-    def test_missing_origin_postal_code(self):
+    def test_missing_origin_postal_code(self, client):
         with pytest.raises(MissingOriginPostalCode) as exc_info:
-            client.rating.services.discover_services(
-                country_code="CA",
-                destination_postal_code="T3Z1C8"
-            )
+            client.rating.services.discover_services(country_code="CA", destination_postal_code="T3Z1C8")
 
         assert exc_info.value.status_code == 400
