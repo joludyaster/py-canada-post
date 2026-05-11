@@ -1,15 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "py-canada-post"
-version = "0.1.0"
-description = "Python library to interact with Canada Post API."
+version = "1.0.0"
+description = "Python wrapper to interact with Canada Post API."
 readme = "README.md"
-requires-python = ">=3.14"
+license = { text = "MIT" }
+authors = [{ name = "Davyd", email = "contact@davyd-svidnitskyi.me" }]
+keywords = ["Canada Post API", "Python wrapper", "cli"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Environment :: Console",
+]
+requires-python = ">=3.11"
 dependencies = [
-    "charset-normalizer==3.4.6",
-    "pip==26.0.1",
-    "pytest>=9.0.2",
+    "cyclopts>=4.11.2",
+    "pytest==9.0.3",
     "python-dotenv>=1.2.2",
-    "requests==2.33.0",
-    "uv==0.11.2",
+    "requests==2.33.1",
     "xmltodict>=1.0.4",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["py_canada_post"]
+
+[tool.ruff]
+# Maximum allowed length of characters per row
+line-length = 100
+
+# Defines a minimum python version to be used
+target-version = "py311"
+
+[tool.mypy]
+# Enables all optional safety checks, mostly type safety checks
+strict = true
+
+[project.scripts]
+# Specificied the path to the CLI (Command-Line Interface) script
+py-canada-post = "py_canada_post.cli.app:app"
