@@ -1,8 +1,8 @@
 from functools import wraps
 import xmltodict
 
-from ..exceptions.exception_map import ERROR_MAP
-from ..exceptions.exceptions import ServerError
+from py_canada_post.exceptions.exception_map import ERROR_MAP
+from py_canada_post.exceptions.exceptions import ServerError
 
 CODE = "code"
 MESSAGE = "message"
