@@ -1,5 +1,3 @@
-from typing import Optional
-
 from .exceptions import ServerError, UserIdDeactivated, EndpointMissmatch, APIMissmatch, InvalidCustomer, \
     UnspecifiedPlatform, PlatformNotAuthorized, InactivePlatform, UnauthorizedPlatform, InvalidPlatformKeyType, \
     IncorrectPlatformRequest, PostOfficesNotFound, InvalidContractNumber, InvalidPostalCode, InvalidDestinationCountry, \
@@ -7,7 +5,7 @@ from .exceptions import ServerError, UserIdDeactivated, EndpointMissmatch, APIMi
 
 
 class ExceptionDefinition:
-    def __init__(self, exception: type[Exception], description: str, mitigation: Optional[str] = None):
+    def __init__(self, exception: type[Exception], description: str, mitigation: str = None):
         self.exception = exception
         self.description = description
         self.mitigation = mitigation
