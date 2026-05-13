@@ -1,0 +1,1 @@
+from .rating_app import rating_app
