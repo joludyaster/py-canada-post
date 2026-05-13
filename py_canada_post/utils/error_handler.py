@@ -1,5 +1,7 @@
 from functools import wraps
+
 import xmltodict
+from requests import Response
 
 from py_canada_post.exceptions.exception_map import ERROR_MAP
 from py_canada_post.exceptions.exceptions import ServerError
@@ -8,6 +10,7 @@ CODE = "code"
 MESSAGE = "message"
 DESCRIPTION = "description"
 MESSAGES = "messages"
+
 
 def error_handler(func):
     @wraps(func)
@@ -33,3 +36,8 @@ def error_handler(func):
         raise error_exception(error_description, error_mitigation, response.status_code)
 
     return wrapper
+
+
+@error_handler
+def error_check(response: Response) -> Response:
+    return response
