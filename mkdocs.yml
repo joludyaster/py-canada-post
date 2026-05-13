@@ -1,0 +1,61 @@
+site_name: Py-canada-post documentation
+theme:
+    font:
+        text: Calibri
+        code: JetBrains Mono
+    name: material
+    logo: assets/logo.png
+    favicon: assets/logo.ico
+    features:
+        - navigation.footer
+        - content.code.copy
+    palette:
+        - scheme: slate
+          primary: darkblue
+          toggle:
+              icon: material/weather-sunny
+              name: Dark mode
+
+        - scheme: default
+          primary: darkblue
+          toggle:
+              icon: material/weather-night
+              name: Light mode
+
+plugins:
+    - search
+    - mkdocstrings:
+        handlers:
+            python:
+                options:
+                    docstring_style: numpy
+                    show_signature: true
+                    show_signature_annotations: true
+                    separate_signature: true
+                    show_root_heading: true
+                    show_source: false
+                    show_root_toc_entry: false
+                    show_root_full_path: false
+
+markdown_extensions:
+    - attr_list
+    - pymdownx.emoji:
+        emoji_index: !!python/name:material.extensions.emoji.twemoji
+        emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - pymdownx.highlight:
+        anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
+    - pymdownx.tasklist:
+        custom_checkbox: true  # Replaces browser default with styled checkboxes
+        clickable_checkbox: false # Set to true if you want them interactive (JS required)
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+
+extra:
+    social:
+        - icon: fontawesome/brands/github
+          link: https://github.com/joludyaster/py-canada-post
+
+copyright: Copyright &copy; 2026 Py-canada-post
