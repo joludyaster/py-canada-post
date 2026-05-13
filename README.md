@@ -93,7 +93,7 @@ You could define the client object yourself:
 import os
 
 from py_canada_post.client import PyCanadaPost
-from py_canada_post.services.rating import Destination, DomesticDestination
+from py_canada_post.services.rating import Destination, DomesticDestination, ParcelCharacteristics
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -109,9 +109,12 @@ def main():
         contract_id=contract_id
     )
     rates = py_canada_post_client.rating.rates.get_rates(
-        "E4M8S3",
-        Destination(
+        origin_postal_code="E4M8S3",
+        destination=Destination(
             domestic=DomesticDestination("T3Z1C8")
+        ),
+        parcel_characteristics=ParcelCharacteristics(
+            weight=13.2
         )
     )
     print(rates)
@@ -124,14 +127,17 @@ Or you could use a shortcut:
 
 ```python
 from py_canada_post.client import PyCanadaPost
-from py_canada_post.services.rating import Destination, DomesticDestination
+from py_canada_post.services.rating import Destination, DomesticDestination, ParcelCharacteristics
 
 def main():
     py_canada_post_client = PyCanadaPost.from_env()
     rates = py_canada_post_client.rating.rates.get_rates(
-        "E4M8S3",
-        Destination(
+        origin_postal_code="E4M8S3",
+        destination=Destination(
             domestic=DomesticDestination("T3Z1C8")
+        ),
+        parcel_characteristics=ParcelCharacteristics(
+            weight=13.2
         )
     )
     print(rates)
