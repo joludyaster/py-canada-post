@@ -1,7 +1,9 @@
 from typing import Annotated
+
 from cyclopts import Parameter, App
-from py_canada_post.services.rating.types import Service
+
 from py_canada_post.client import PyCanadaPost
+from py_canada_post.services.rating.types import Service
 
 client = PyCanadaPost.from_env()
 
@@ -10,19 +12,20 @@ discover_services = App(
     help="Command to get available services."
 )
 
+
 @discover_services.command
 def discover_services(
     country_code: Annotated[
         str,
-        Parameter(name=["country-code", "-cc"], required=True)
+        Parameter(name=["country-code", "-c"], required=True)
     ],
     origin_postal_code: Annotated[
         str,
-        Parameter(name=["origin-postal-code", "-opc"], required=False)
+        Parameter(name=["origin-postal-code", "-o"], required=False)
     ] = None,
     destination_postal_code: Annotated[
         str,
-        Parameter(name=["destination-postal-code", "-dpc"], required=False)
+        Parameter(name=["destination-postal-code", "-d"], required=False)
     ] = None
 ) -> list[Service] | None:
     """
@@ -40,12 +43,12 @@ def discover_services(
     Returns
     -------
     list[Service] | None
-        List of available services or None.
+        List of services or None.
     """
 
-    response = client.rating.services.discover_services(
+    services = client.rating.services.discover_services(
         country_code,
         origin_postal_code,
         destination_postal_code
     )
-    return client.rating.services.service_to_object(response)
+    return services

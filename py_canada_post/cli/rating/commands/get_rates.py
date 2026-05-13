@@ -1,8 +1,10 @@
 from datetime import datetime
 from typing import Annotated, Literal
+
 from cyclopts import Parameter, App
-from py_canada_post.services.rating.types import Destination, Option, ParcelCharacteristics, Rate
+
 from py_canada_post.client import PyCanadaPost
+from py_canada_post.services.rating.types import Destination, Option, ParcelCharacteristics, Rate
 
 client = PyCanadaPost.from_env()
 
@@ -11,35 +13,36 @@ get_rates = App(
     help="Command to get rates."
 )
 
+
 @get_rates.command
 def get_rates(
     origin_postal_code: Annotated[
         str,
-        Parameter(name=["origin-postal-code", "-ops"], required=True)
+        Parameter(name=["origin-postal-code", "-o"], required=True)
     ],
     destination: Annotated[
         Destination,
-        Parameter(name=["destination-dataclass-object", "-ddo"], required=True)
+        Parameter(name=["destination", "-d"], required=True)
     ],
     promo_code: Annotated[
         str,
-        Parameter(name=["promo-code", "-pc"], required=False)
+        Parameter(name=["promo-code", "-p"], required=False)
     ] = None,
     quote_type: Annotated[
         Literal["commercial", "counter"],
-        Parameter(name=["quote-type", "-qt"], required=False)
+        Parameter(name=["quote-type", "-q"], required=False)
     ] = "commercial",
     expected_mailing_date: Annotated[
         datetime,
-        Parameter(name=["expected-mailing-date", "-emd"], required=False)
+        Parameter(name=["expected-mailing-date", "-m"], required=False)
     ] = None,
     options: Annotated[
         list[Option],
-        Parameter(name=["options", "-o"], required=False)
+        Parameter(name=["options", "-O"], required=False, consume_multiple=True)
     ] = None,
     parcel_characteristics: Annotated[
         ParcelCharacteristics,
-        Parameter(name=["parcel-characteristics", "-pc"], required=False)
+        Parameter(name=["parcel-characteristics", "-c"], required=False)
     ] = None,
     unpackaged: Annotated[
         bool,
@@ -47,11 +50,11 @@ def get_rates(
     ] = False,
     mailing_tube: Annotated[
         bool,
-        Parameter(name=["mailing-tube", "-mt"], required=False)
+        Parameter(name=["mailing-tube", "-t"], required=False)
     ] = False,
     oversized: Annotated[
         bool,
-        Parameter(name=["oversized", "-os"], required=False)
+        Parameter(name=["oversized", "-z"], required=False)
     ] = False,
     services: Annotated[
         list[Literal[
@@ -73,7 +76,7 @@ def get_rates(
             "INT.SP.SURF",
             "INT.TP"
         ]],
-        Parameter(name=["services", "-s"], required=False)
+        Parameter(name=["services", "-s"], required=False, consume_multiple=True)
     ] = None
 ) -> list[Rate] | None:
     """
@@ -132,9 +135,10 @@ def get_rates(
     Returns
     -------
     list[Rate] or None
-        List of rate or None
+        List of rates or None.
     """
-    response = client.rating.rates.get_rates(
+
+    rates = client.rating.rates.get_rates(
         origin_postal_code,
         destination,
         promo_code,
@@ -147,4 +151,4 @@ def get_rates(
         oversized,
         services
     )
-    return client.rating.rates.rate_to_object(response)
+    return rates
