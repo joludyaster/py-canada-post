@@ -1,22 +1,42 @@
 import os
-
 from base64 import b64encode
 from typing import Literal
-from py_canada_post.services.rating.rating import Rating
-from requests.auth import to_native_string
+from typing import Self
+
 from dotenv import load_dotenv
+from requests.auth import to_native_string
+
+from py_canada_post.services.rating.rating import Rating
 
 load_dotenv()
 
+
 class PyCanadaPost:
     def __init__(
-        self,
-        customer_number: int,
-        api_key: str,
-        environment: Literal["SANDBOX", "PRODUCTION"] = "SANDBOX",
-        contract_id: int = None,
-        language: Literal["en-CA", "fr-CA"] = "en-CA"
+            self,
+            customer_number: int,
+            api_key: str,
+            environment: Literal["SANDBOX", "PRODUCTION"] = "SANDBOX",
+            contract_id: int = None,
+            language: Literal["en-CA", "fr-CA"] = "en-CA"
     ) -> None:
+        """
+        Initialize class variables.
+
+        Parameters
+        ----------
+        customer_number : int
+            Customer number that was obtained from Canada Post Developer Portal.
+        api_key : str
+            Api key that was obtained from Canada Post Developer Porta
+        environment : Literal["SANDBOX", "PRODUCTION"], default "SANDBOX"
+            Environment of the app.
+        contract_id : int, optional
+            Contract id that was obtained from Canada Post Developer Portal.
+        language : Literal["en-CA", "fr-CA"], default "en-CA"
+            Language to use.
+        """
+
         self.customer_number = customer_number
         self.contract_id = contract_id
         self.environment = environment
@@ -28,8 +48,16 @@ class PyCanadaPost:
 
         self.rating = Rating(self.headers, self.endpoint, self.customer_number, self.contract_id)
 
-
     def _get_endpoint(self) -> str:
+        """
+        Function to get an endpoint based on the environment.
+
+        Returns
+        -------
+        str
+            Endpoint.
+        """
+
         endpoints = {
             "SANDBOX": "https://ct.soa-gw.canadapost.ca",
             "PRODUCTION": "https://soa-gw.canadapost.ca"
@@ -38,6 +66,15 @@ class PyCanadaPost:
         return endpoints[self.environment]
 
     def _get_headers(self) -> dict:
+        """
+        Function to get essential headers.
+
+        Returns
+        -------
+        dict
+            Headers.
+        """
+
         username, password = self._api_key.split(":")
 
         username = username.encode("latin1")
@@ -49,7 +86,16 @@ class PyCanadaPost:
         }
 
     @classmethod
-    def from_env(cls):
+    def from_env(cls) -> Self:
+        """
+        Function to initialize PyCanadaPost client object based on the .env variables.
+        Function raises an error if .env variables don't exist.
+
+        Returns
+        -------
+        Self@PyCanadaPost
+            PyCanadaPost client object.
+        """
         customer_number = os.getenv("CUSTOMER_NUMBER", None)
         api_key = os.getenv("API_KEY", None)
         contract_id = os.getenv("CONTRACT_ID", None)

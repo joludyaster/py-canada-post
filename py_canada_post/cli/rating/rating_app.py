@@ -1,6 +1,7 @@
 from cyclopts import App
-from .commands.get_rates import get_rates
+
 from .commands.discover_services import discover_services
+from .commands.get_rates import get_rates
 
 rating_app = App(
     name="rating",

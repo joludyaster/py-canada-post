@@ -1,6 +1,7 @@
 from requests import Response
+
+from py_canada_post.services.rating.types import Rate, Adjustment, OptionDetails, Tax, TaxDetails, Service
 from py_canada_post.utils.response_to_object.response_to_object import ResponseToObject
-from py_canada_post.services.rating.types import Rate, RateAdjustment, RateOption, RateTax, RateTaxDetails, RateService
 
 ADJUSTMENTS = "adjustments"
 ADJUSTMENT = "adjustment"
@@ -37,14 +38,47 @@ EXPECTED_DELIVERY_DATE = "expected-delivery-date"
 EXPECTED_TRANSIT_TIME = "expected-transit-time"
 GUARANTEED_DELIVERY = "guaranteed-delivery"
 
+
 class RateToObject(ResponseToObject):
-    def __init__(self, response: Response):
+    def __init__(self, response: Response) -> None:
+        """
+        Initialize class variables.
+
+        Parameters
+        ----------
+        response : Response
+            Response object.
+        """
+
         super().__init__(response)
 
-    def response_to_object(self):
+    def response_to_object(self) -> list[Rate] | None:
+        """
+        Main function to deserialize xml response object.
+
+        Returns
+        -------
+        list[Rate] or None
+            List of rates or None.
+        """
+
         return self._construct_price_quotes(self.parsed_response)
 
     def _construct_price_quotes(self, obj: dict) -> list[Rate] | None:
+        """
+        Function to generate price quotes based on the object provided.
+
+        Parameters
+        ----------
+        obj : dict
+            Object dictionary.
+
+        Returns
+        -------
+        list[Rate] or None
+            List of rates of None.
+        """
+
         price_quotes = self._get_objects(obj, [PRICE_QUOTES, PRICE_QUOTE])
 
         if isinstance(price_quotes, list):
@@ -55,7 +89,21 @@ class RateToObject(ResponseToObject):
 
         return None
 
-    def _construct_price_quote(self, price_quote: dict):
+    def _construct_price_quote(self, price_quote: dict) -> Rate:
+        """
+        Function that gathers all other properties of the Rate and combines them all together.
+
+        Parameters
+        ----------
+        price_quote : dict
+            Price quote object.
+
+        Returns
+        -------
+        Rate
+            Rate with all the properties combined.
+        """
+
         adjustments = self._construct_adjustments(price_quote)
         options = self._construct_options(price_quote)
         taxes = self._construct_taxes(price_quote)
@@ -73,37 +121,92 @@ class RateToObject(ResponseToObject):
             service=service
         )
 
-    def _construct_adjustments(self, obj: dict) -> list[RateAdjustment] | None:
+    def _construct_adjustments(self, obj: dict) -> list[Adjustment] | None:
+        """
+        Function to construct adjustments.
+
+        Parameters
+        ----------
+        obj : dict
+            Object dictionary.
+
+        Returns
+        -------
+        list[Adjustment] or None
+            List of adjustments or None.
+        """
+
         return self._construct_objects(
             obj,
             [PRICE_DETAILS, ADJUSTMENTS, ADJUSTMENT],
             [ADJUSTMENT_CODE, ADJUSTMENT_COST, ADJUSTMENT_NAME, (QUALIFIER, PERCENT)],
-            RateAdjustment
+            Adjustment
         )
 
-    def _construct_options(self, obj: dict) -> list[RateOption] | None:
+    def _construct_options(self, obj: dict) -> list[OptionDetails] | None:
+        """
+        Function to construct options.
+
+        Parameters
+        ----------
+        obj : dict
+            Object dictionary.
+
+        Returns
+        -------
+        list[OptionDetails] or None
+            List of options or None.
+        """
+
         return self._construct_objects(
             obj,
             [PRICE_DETAILS, OPTIONS, OPTION],
             [OPTION_CODE, OPTION_NAME, OPTION_PRICE, (QUALIFIER, INCLUDED)],
-            RateOption
+            OptionDetails
         )
 
-    def _construct_service(self, obj: dict) -> RateService:
+    def _construct_service(self, obj: dict) -> Service:
+        """
+        Function to construct service.
+
+        Parameters
+        ----------
+        obj : dict
+            Object dictionary.
+
+        Returns
+        -------
+        Service
+        """
+
         return self._construct_object(
             obj,
-            [SERVICE_CODE, SERVICE_NAME, (SERVICE_STANDARD, AM_DELIVERY), (SERVICE_STANDARD, EXPECTED_DELIVERY_DATE), (SERVICE_STANDARD, EXPECTED_TRANSIT_TIME), (SERVICE_STANDARD, GUARANTEED_DELIVERY)],
-            RateService
+            [SERVICE_CODE, SERVICE_NAME, (SERVICE_STANDARD, AM_DELIVERY), (SERVICE_STANDARD, EXPECTED_DELIVERY_DATE),
+             (SERVICE_STANDARD, EXPECTED_TRANSIT_TIME), (SERVICE_STANDARD, GUARANTEED_DELIVERY)],
+            Service
         )
 
-    def _construct_taxes(self, obj: dict) -> RateTax:
-        taxes = []
+    def _construct_taxes(self, obj: dict) -> Tax:
+        """
+        Function to construct taxes.
+
+        Parameters
+        ----------
+        obj : dict
+            Object dictionary.
+
+        Returns
+        -------
+        Tax
+        """
+
+        taxes = {}
         for tax_type in ["gst", "hst", "pst"]:
             tax = obj.get(PRICE_DETAILS, {}).get(TAXES, {}).get(tax_type)
-            taxes.append(self._construct_object(tax, [TEXT, PERCENT_2], RateTaxDetails))
+            taxes[tax_type] = self._construct_object(tax, [TEXT, PERCENT_2], TaxDetails)
 
-        return RateTax(
-            gst=taxes[0],
-            hst=taxes[1],
-            pst=taxes[2]
+        return Tax(
+            gst=taxes["gst"],
+            hst=taxes["hst"],
+            pst=taxes["pst"]
         )

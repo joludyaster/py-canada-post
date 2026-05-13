@@ -5,8 +5,25 @@ from xml.etree.ElementTree import Element
 
 
 class ConstructXMLElement:
-
     def construct_xml_element(self, parent_tag: str, data: Any, child_tag: str = None) -> Element | None:
+        """
+        Construct xml element.
+
+        Parameters
+        ----------
+        parent_tag : str
+            Parent tag of the xml body.
+        data : Any
+            Could be either a dataclass, list[str] or string.
+        child_tag : str, optional
+            Child tag to include in the body.
+
+        Returns
+        -------
+        Element or None
+            Either a valid Element or None.
+        """
+
         if not data:
             return None
 
@@ -26,11 +43,43 @@ class ConstructXMLElement:
 
     @staticmethod
     def _construct_from_string(parent_tag: str, data: str) -> Element:
+        """
+        Function to construct an Element from string.
+
+        Parameters
+        ----------
+        parent_tag : str
+            Parent tag of the xml body.
+        data : str
+            String itself.
+
+        Returns
+        -------
+        Element
+            Element.
+        """
+
         element = Element(parent_tag)
         element.text = data
         return element
 
     def _construct_from_dataclass(self, parent_tag: str, obj: Any) -> Element | None:
+        """
+        Function to construct an Element from a dataclass.
+
+        Parameters
+        ----------
+        parent_tag : str
+            Parent tag of the xml body.
+        obj : Any
+            Dataclass.
+
+        Returns
+        -------
+        Element or None
+            Either a valid Element or None.
+        """
+
         element = Element(parent_tag)
 
         filtered = {key: value for key, value in obj.__dict__.items() if value is not None}
@@ -50,6 +99,24 @@ class ConstructXMLElement:
         return element
 
     def _construct_from_list(self, parent_tag: str, child_tag: str, data: list[Any]) -> Element | None:
+        """
+        Function to construct an Element from the list of string or dataclasses.
+
+        Parameters
+        ----------
+        parent_tag : str
+            Parent tag of the xml body.
+        child_tag : str
+            Child tag to include in the body.
+        data : list[Any]
+            List of either strings or dataclasses.
+
+        Returns
+        -------
+        Element or None
+            Either a valid Element or None.
+        """
+
         element = Element(parent_tag)
 
         if all(isinstance(item, str) for item in data):
@@ -70,6 +137,19 @@ class ConstructXMLElement:
 
     @staticmethod
     def _to_string(data: Any) -> str:
+        """
+        Function to convert any data type into a string.
+
+        Parameters
+        ----------
+        data : Any
+            Any type of data.
+
+        Returns
+        -------
+        str
+        """
+
         to_string = str(data)
         if isinstance(data, float) or isinstance(data, int) or isinstance(data, bool):
             to_string = str(data).lower()
