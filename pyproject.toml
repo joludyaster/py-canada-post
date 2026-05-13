@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "py-canada-post"
-version = "1.0.0"
+version = "1.0.1"
 description = "Python wrapper to interact with Canada Post API."
 readme = "README.md"
 license = { text = "MIT" }
