@@ -7,11 +7,12 @@ from py_canada_post.services.rating.types import (
     ParcelCharacteristics, Dimensions,
 )
 
+
 class TestRates:
 
     def test_get_rates(self, client):
 
-        response = client.rating.rates.get_rates(
+        rates = client.rating.rates.get_rates(
             origin_postal_code="E4M8S3",
             destination=Destination(
                 domestic=DomesticDestination(
@@ -22,10 +23,6 @@ class TestRates:
                 weight=23.5
             ),
         )
-
-        assert response.status_code == 200
-
-        rates = client.rating.rates.rate_to_object(response)
 
         assert rates is not None
         assert len(rates) > 0
@@ -51,7 +48,6 @@ class TestRates:
 
         assert exc_info.value.status_code == 400
         assert "PostalCodeType" in exc_info.value.mitigation
-
 
     def test_invalid_parcel_characteristics(self, client):
         with pytest.raises(ServerError) as exc_info:

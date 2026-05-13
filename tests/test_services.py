@@ -2,12 +2,11 @@ import pytest
 
 from py_canada_post.exceptions.exceptions import InvalidDestinationCountry, MissingOriginPostalCode
 
+
 class TestServices:
 
     def test_services(self, client):
-        response = client.rating.services.discover_services("JP")
-
-        services = client.rating.services.service_to_object(response)
+        services = client.rating.services.discover_services("JP")
 
         assert services is not None
         assert len(services) > 0
@@ -16,8 +15,6 @@ class TestServices:
 
         assert first_service.code is not None
         assert first_service.name is not None
-
-        assert response.status_code == 200
 
     def test_invalid_country_code(self, client):
         with pytest.raises(InvalidDestinationCountry) as exc_info:
