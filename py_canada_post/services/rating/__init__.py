@@ -6,13 +6,12 @@ from py_canada_post.services.rating.types import (
     Destination,
     Dimensions,
     ParcelCharacteristics,
-    RateAdjustment,
-    RateOption,
-    RateTaxDetails,
-    RateTax,
-    RateService,
-    Rate,
-    Service
+    Adjustment,
+    OptionDetails,
+    TaxDetails,
+    Tax,
+    Service,
+    Rate
 )
 
 __all__ = [
@@ -23,11 +22,10 @@ __all__ = [
     "Destination",
     "Dimensions",
     "ParcelCharacteristics",
-    "RateAdjustment",
-    "RateOption",
-    "RateTaxDetails",
-    "RateTax",
-    "RateService",
-    "Rate",
-    "Service"
+    "Adjustment",
+    "OptionDetails",
+    "TaxDetails",
+    "Tax",
+    "Service",
+    "Rate"
 ]
