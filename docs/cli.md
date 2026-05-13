@@ -9,7 +9,7 @@ the [rating](https://www.canadapost-postescanada.ca/info/mc/business/productsser
 
 ### Get rates CLI
 
-If you want to know meaning if each command, visit [here](https://py-canada-post.readthedocs.io/usage/#py_canada_post.services.rating.operations.get_rates.GetRates.get_rates).
+If you want to know meaning if each command, visit [here](https://py-canada-post.readthedocs.io/en/latest/usage/#py_canada_post.services.rating.operations.get_rates.GetRates.get_rates).
 
 #### Usage
 
@@ -97,7 +97,7 @@ py-canada-post rating get-rates \
 
 ### Discover services CLI
 
-If you want to know meaning if each command, visit [here](https://py-canada-post.readthedocs.io/usage/#py_canada_post.services.rating.operations.discover_services.DiscoverServices.discover_services).
+If you want to know meaning if each command, visit [here](https://py-canada-post.readthedocs.io/en/latest/usage/#py_canada_post.services.rating.operations.discover_services.DiscoverServices.discover_services).
 
 #### Usage:
 
