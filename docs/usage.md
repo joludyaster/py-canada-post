@@ -17,3 +17,7 @@ the [rating](https://www.canadapost-postescanada.ca/info/mc/business/productsser
 ::: py_canada_post.services.rating.operations.discover_services.DiscoverServices.discover_services
     options:
         heading_level: 3
+
+::: py_canada_post.services.rating.operations.get_service.GetService.get_service
+    options:
+        heading_level: 3
