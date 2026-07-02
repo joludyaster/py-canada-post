@@ -38,6 +38,7 @@ Usage:
     py-canada-post [-v] [-h]
     py-canada-post rating get-rates ORIGIN-POSTAL-CODE [ARGS]
     py-canada-post rating discover-services COUNTRY-CODE [ARGS]
+    py-canada-post rating get-service SERVICE-CODE [ARGS]
     
     more to come...
     
