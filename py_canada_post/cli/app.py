@@ -2,7 +2,7 @@ from importlib.metadata import version
 
 from cyclopts import App
 
-from .rating import rating_app
+from .rating.rating_app import rating_app
 
 
 def version_callback() -> str:

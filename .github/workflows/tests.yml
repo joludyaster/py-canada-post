@@ -9,6 +9,8 @@ jobs:
     test:
         name: Tests
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
 
         steps:
             -   name: Checkout code
@@ -24,8 +26,8 @@ jobs:
                 with:
                     enable-cache: true
 
-#            -   name: Lint
-#                run: uv run ruff check .
+            -   name: Lint
+                run: uv run ruff check .
 
             -   name: Install dependencies
                 run: uv sync

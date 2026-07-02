@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "py-canada-post"
-version = "1.0.1"
+version = "1.1.1"
 description = "Python wrapper to interact with Canada Post API."
 readme = "README.md"
 license = { text = "MIT" }
@@ -17,12 +17,12 @@ classifiers = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "cyclopts==4.12.0",
+    "cyclopts==4.20.0",
     "mkdocs-material>=9.7.6",
     "mkdocstrings-python>=2.0.3",
-    "pytest==9.0.3",
+    "pytest==9.1.1",
     "python-dotenv>=1.2.2",
-    "requests==2.34.0",
+    "requests==2.34.2",
     "xmltodict>=1.0.4",
 ]
 
@@ -42,7 +42,7 @@ strict = true
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.12",
+    "ruff>=0.15.20",
 ]
 
 [project.scripts]

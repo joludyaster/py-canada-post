@@ -102,7 +102,7 @@ If you want to know meaning if each command, visit [here](https://py-canada-post
 #### Usage:
 
 ```commandline
-py-canada-post rating discover services \
+py-canada-post rating discover-services \
     -c CA
     -o E4M8S3
     -d T3Z1C8
@@ -149,4 +149,65 @@ py-canada-post rating discover services -c JP
     Service(code='INT.SP.SURF', name='Small Packet International Surface', am_delivery=None, expected_delivery_date=None, expected_transit_time=None, guaranteed_delivery=None),
     Service(code='INT.SP.AIR', name='Small Packet International Air', am_delivery=None, expected_delivery_date=None, expected_transit_time=None, guaranteed_delivery=None)
 ]
+```
+
+### Get service CLI
+
+If you want to know meaning if each command, visit [here](https://py-canada-post.readthedocs.io/en/latest/usage/#py_canada_post.services.rating.operations.get_service.GetService.get_service).
+
+#### Usage:
+
+```commandline
+py-canada-post rating get-service \
+    -s INT.XP
+    -c JP
+```
+
+| Parameter                         | Type                    | Default    |
+|-----------------------------------|-------------------------|------------|
+| `--service-code`, `-s`            | `str`                   | *required* |
+| `--country-code`, `-c`            | `str`                   | `None`     |
+
+#### Examples:
+
+Output (service data etc. change all the time, you might see different service data when you perform the command):
+
+```commandline
+py-canada-post rating get-service \
+    -s INT.XP
+    -c JP
+```
+
+```bash
+Service(
+    service_code='INT.XP',
+    service_name='Xpresspost International',
+    am_delivery=None,
+    expected_delivery_date=None,
+    expected_transit_time=None,
+    guaranteed_delivery=None,
+    comment=None,
+    options=[
+        Option(option_code='COV', option_amount=None, price=None, included=None, option_name='Coverage', mandatory=False, qualifier_required=True, qualifier_max=5000),
+        Option(option_code='SO', option_amount=None, price=None, included=None, option_name='Signature option', mandatory=True, qualifier_required=False, qualifier_max=None),
+        Option(option_code='DC', option_amount=None, price=None, included=None, option_name='Delivery confirmation', mandatory=True, qualifier_required=False, qualifier_max=None),
+        Option(option_code='RASE', option_amount=None, price=None, included=None, option_name="Return at sender's expense", mandatory=True, qualifier_required=False, qualifier_max=None),
+        Option(option_code='ABAN', option_amount=None, price=None, included=None, option_name='Abandon', mandatory=True, qualifier_required=False, qualifier_max=None)
+    ],
+    restrictions=Restrictions(
+        weight_restriction=AttributeRestriction(min_value=0, max_value=30000),
+        dimensional_restrictions=DimensionalRestrictions(
+            length=AttributeRestriction(min_value=None, max_value=150),
+            width=AttributeRestriction(min_value=None, max_value=150),
+            height=AttributeRestriction(min_value=None, max_value=150),
+            length_plus_girth_max=300,
+            length_height_width_sum_max=None,
+            oversize_limit=100
+        ),
+        density_factor=5000,
+        can_ship_in_mailing_tube=True,
+        can_ship_unpackaged=False,
+        allowed_as_return_service=False
+    )
+)
 ```

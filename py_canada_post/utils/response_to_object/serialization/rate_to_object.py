@@ -1,6 +1,6 @@
 from requests import Response
 
-from py_canada_post.services.rating.types import Rate, Adjustment, OptionDetails, Tax, TaxDetails, Service
+from py_canada_post.services.rating.types import Rate, Adjustment, Option, Tax, TaxDetails, Service
 from py_canada_post.utils.response_to_object.response_to_object import ResponseToObject
 
 ADJUSTMENTS = "adjustments"
@@ -143,7 +143,7 @@ class RateToObject(ResponseToObject):
             Adjustment
         )
 
-    def _construct_options(self, obj: dict) -> list[OptionDetails] | None:
+    def _construct_options(self, obj: dict) -> list[Option] | None:
         """
         Function to construct options.
 
@@ -161,8 +161,8 @@ class RateToObject(ResponseToObject):
         return self._construct_objects(
             obj,
             [PRICE_DETAILS, OPTIONS, OPTION],
-            [OPTION_CODE, OPTION_NAME, OPTION_PRICE, (QUALIFIER, INCLUDED)],
-            OptionDetails
+            [OPTION_CODE, None, OPTION_PRICE, (QUALIFIER, INCLUDED), OPTION_NAME],
+            Option
         )
 
     def _construct_service(self, obj: dict) -> Service:
