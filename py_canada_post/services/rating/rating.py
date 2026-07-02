@@ -1,5 +1,6 @@
 from py_canada_post.services.rating.operations.discover_services import DiscoverServices
 from py_canada_post.services.rating.operations.get_rates import GetRates
+from py_canada_post.services.rating.operations.get_service import GetService
 
 
 class Rating:
@@ -24,6 +25,7 @@ class Rating:
 
         self.rates = GetRates(*arguments)
         self.services = DiscoverServices(*arguments)
+        self.get_service = GetService(*arguments)
 
     @staticmethod
     def _get_headers(headers: dict) -> dict:
