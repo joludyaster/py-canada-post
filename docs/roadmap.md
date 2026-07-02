@@ -6,7 +6,7 @@ Here the future goals for this wrapper are located.
 
     - [x] [Get rates](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/default.jsf)
     - [x] [Discover services](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/discoverservices.jsf)
-    - [ ] [Get service](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/getservices.jsf)
+    - [x] [Get service](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/getservices.jsf)
     - [ ] [Get option](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/getoption.jsf)
 
 - [ ] [Contract shipping](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/shippingmanifest/default.jsf)
