@@ -29,8 +29,8 @@ class TestRates:
 
         first_quote = rates[0]
 
-        assert first_quote.service.code is not None
-        assert first_quote.service.name is not None
+        assert first_quote.service.service_code is not None
+        assert first_quote.service.service_name is not None
 
     def test_invalid_postal_code(self, client):
         with pytest.raises(ServerError) as exc_info:

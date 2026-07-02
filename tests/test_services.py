@@ -13,8 +13,8 @@ class TestServices:
 
         first_service = services[0]
 
-        assert first_service.code is not None
-        assert first_service.name is not None
+        assert first_service.service_code is not None
+        assert first_service.service_name is not None
 
     def test_invalid_country_code(self, client):
         with pytest.raises(InvalidDestinationCountry) as exc_info:
