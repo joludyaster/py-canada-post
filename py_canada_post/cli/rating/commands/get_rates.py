@@ -1,3 +1,5 @@
+import dataclasses
+import typing
 from datetime import datetime
 from typing import Annotated, Literal
 
@@ -12,6 +14,37 @@ get_rates = App(
     name="get-rates",
     help="Command to get rates."
 )
+
+
+def options_converter(type_, tokens):
+    inner_type = typing.get_args(type_)[0]
+    results = []
+    current = {}
+    fields = dataclasses.fields(inner_type)
+
+    for token in tokens:
+        if token.index == 0 and current:
+            results.append(inner_type(**current))
+            current = {}
+
+        field = fields[token.index]
+        # Unwrap Optional[X] -> X
+        field_type = typing.get_args(field.type)[0] if typing.get_args(field.type) else field.type
+
+        # Cast to the field's type
+        if field_type is float:
+            current[field.name] = float(token.value)
+        elif field_type is int:
+            current[field.name] = int(token.value)
+        elif field_type is bool:
+            current[field.name] = token.value.lower() in ("true", "1", "yes")
+        else:
+            current[field.name] = token.value
+
+    if current:
+        results.append(inner_type(**current))
+
+    return results
 
 
 @get_rates.command
@@ -38,7 +71,7 @@ def get_rates(
     ] = None,
     options: Annotated[
         list[Option],
-        Parameter(name=["options", "-O"], required=False, consume_multiple=True)
+        Parameter(name=["options", "-O"], required=False, converter=options_converter, consume_multiple=True)
     ] = None,
     parcel_characteristics: Annotated[
         ParcelCharacteristics,
