@@ -155,6 +155,7 @@ Usage:
     py-canada-post [-v] [-h]
     py-canada-post rating get-rates ORIGIN-POSTAL-CODE [ARGS]
     py-canada-post rating discover-services COUNTRY-CODE [ARGS]
+    py-canada-post rating get-service SERVICE-CODE [ARGS]
     
     more to come...
     
@@ -171,7 +172,7 @@ See the [CLI documentation](https://py-canada-post.readthedocs.io/en/latest/cli/
 - [ ] [Rating](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/default.jsf)
     - [x] [Get rates](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/default.jsf)
     - [x] [Discover services](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/discoverservices.jsf)
-    - [ ] [Get service](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/getservices.jsf)
+    - [x] [Get service](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/getservices.jsf)
     - [ ] [Get option](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/rating/getrates/getoption.jsf)
 
 - [ ] [Contract shipping](https://www.canadapost-postescanada.ca/info/mc/business/productsservices/developers/services/shippingmanifest/default.jsf)
