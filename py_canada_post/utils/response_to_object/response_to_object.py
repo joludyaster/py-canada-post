@@ -1,12 +1,11 @@
-import datetime
 from datetime import datetime
-from typing import Union, TypeVar, Type, Iterable, Any
+from typing import TypeVar, Type, Iterable, Any
 
 import xmltodict
 from requests import Response
 
 T = TypeVar("T")
-KeyPath = Union[str, Iterable[str]]
+KeyPath = str | Iterable[str] | None
 
 
 def transform_date(date: str) -> datetime | None:
@@ -138,6 +137,9 @@ class ResponseToObject:
 
         if isinstance(path, str):
             return obj.get(path, None)
+
+        if path is None:
+            return None
 
         current = obj
         for key in path:
